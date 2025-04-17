@@ -18,10 +18,12 @@ class HealthVectorStore:
             persist_directory: Optional directory to persist vector store
         """
         if not torch.cuda.is_available():
-            raise RuntimeError("CUDA (GPU) not available. Please run on a machine with a CUDA-enabled GPU.")
+            # raise RuntimeError("CUDA (GPU) not available. Please run on a machine with a CUDA-enabled GPU.")
+            device = "cpu"
         else:
+            device = "cuda"
             print(f"✅ Using GPU: {torch.cuda.get_device_name(0)}")
-        self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={"device": "cuda"}) #OpenAIEmbeddings()
+        self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={"device": device}) #OpenAIEmbeddings()
         self.persist_directory = persist_directory
         self.vectorstore = None
 
