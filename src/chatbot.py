@@ -43,7 +43,7 @@ class HealthManagementChatbot:
         # basic
         self.prompt_template = prompt_template
         # streamlit
-        self.prompt_template = get_prompt_template(prompt_type)
+        # self.prompt_template = get_prompt_template(prompt_type)
 
         self.llm = get_llm(model_name=model_name, temperature=temperature)
 

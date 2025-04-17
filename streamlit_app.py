@@ -15,24 +15,6 @@ VECTOR_DB_PATH = "./vector_db_v1"
 MODEL_NAME = "llama3"
 PROMPT_TYPE = "basic"
 
-try:
-    vector_store = HealthVectorStore(persist_directory=VECTOR_DB_PATH)
-    vector_store.load()
-    retriever = vector_store.get_retriever()
-
-    if PROMPT_TYPE == "basic":
-        prompt_template = HealthPromptTemplates.get_basic_health_template()
-    elif PROMPT_TYPE == "enhanced":
-        prompt_template = HealthPromptTemplates.get_enhanced_health_template()
-    else:
-        prompt_template = HealthPromptTemplates.get_medication_management_template()
-
-    chatbot = HealthManagementChatbot(retriever, prompt_template, model_name=MODEL_NAME)
-
-except Exception as e:
-    st.error(f"error from init: {e}")
-    chatbot = None
-
 
 # Sidebar for model settings
 st.sidebar.title("🔧 Settings")
