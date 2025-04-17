@@ -49,6 +49,9 @@ def load_chatbot(model_name, prompt_type):
     )
 
 chatbot = load_chatbot(model, prompt_type)
+if chatbot is None:
+    st.error("failed to load vector db")
+    st.stop()
 
 # User input
 query = st.text_input("💬 Enter your health question:")
