@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import streamlit as st
 from src.chatbot import HealthChatbot
 
