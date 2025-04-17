@@ -111,6 +111,7 @@ class HealthVectorStore:
             )
             print(f"✅ Vector store loaded from {self.persist_directory}")
         except Exception as e:
+            self.vectorstore = None
             print(f"⚠️ Failed to load vector store: {e}")
 
         # from langchain.vectorstores.faiss import FAISS
