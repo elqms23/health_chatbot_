@@ -35,8 +35,9 @@ def load_chatbot(model_name, prompt_type):
 
     try:
         vector_store.load()
-        retriever = vector_store.get_retriever()
-        print("✅ Vector store loaded.")
+        if vector_store.vectorstore is not None:
+            retriever = vector_store.get_retriever()
+            print("✅ Vector store loaded.")
     except Exception as e:
         print(f"⚠️ Vector store not available: {e}")
 
