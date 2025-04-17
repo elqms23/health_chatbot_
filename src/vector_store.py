@@ -1,7 +1,10 @@
 from typing import List
 from langchain.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_community.vectorstores import Chroma
-from langchain_community.vectorstores import FAISS    
+# from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 import torch
 
@@ -101,18 +104,18 @@ class HealthVectorStore:
             raise ValueError("No persist directory specified.")
         
         # for local
-        # try:
-        #     self.vectorstore = Chroma(
-        #         persist_directory=self.persist_directory,
-        #         embedding_function=self.embeddings
-        #     )
-        #     print(f"✅ Vector store loaded from {self.persist_directory}")
-        # except Exception as e:
-        #     print(f"⚠️ Failed to load vector store: {e}")
-        #     self.vectorstore = None
+        try:
+            self.vectorstore = Chroma(
+                persist_directory=self.persist_directory,
+                embedding_function=self.embeddings
+            )
+            print(f"✅ Vector store loaded from {self.persist_directory}")
+        except Exception as e:
+            print(f"⚠️ Failed to load vector store: {e}")
+            self.vectorstore = None
 
-        from langchain.vectorstores.faiss import FAISS
+        # from langchain.vectorstores.faiss import FAISS
 
-        dummy_docs = [Document(page_content="placeholder", metadata={"source": "dummy"})]
-        self.vectorstore = FAISS.from_documents(dummy_docs, self.embeddings)
-        print("FAISS vector store loaded (placeholder)")
+        # dummy_docs = [Document(page_content="placeholder", metadata={"source": "dummy"})]
+        # self.vectorstore = FAISS.from_documents(dummy_docs, self.embeddings)
+        # print("FAISS vector store loaded (placeholder)")
