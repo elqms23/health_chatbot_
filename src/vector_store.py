@@ -1,6 +1,7 @@
 from typing import List
 from langchain.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+# from langchain_community.vectorstores import FAISS    
 from langchain.schema import Document
 import torch
 
@@ -99,7 +100,12 @@ class HealthVectorStore:
         if not self.persist_directory:
             raise ValueError("No persist directory specified.")
 
-        self.vectorstore = Chroma(
-            persist_directory=self.persist_directory,
-            embedding_function=self.embeddings
-        )
+        try:
+            self.vectorstore = Chroma(
+                persist_directory=self.persist_directory,
+                embedding_function=self.embeddings
+            )
+            print(f"✅ Vector store loaded from {self.persist_directory}")
+        except Exception as e:
+            print(f"⚠️ Failed to load vector store: {e}")
+            self.vectorstore = None
