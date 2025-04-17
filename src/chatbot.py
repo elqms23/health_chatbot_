@@ -4,6 +4,7 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseRetriever
+from src.prompt_templates import get_prompt_template
 from typing import Dict, Any
 
 def get_llm(model_name: str, temperature: float = 0):
@@ -23,8 +24,11 @@ class HealthManagementChatbot:
             self,
             retriever: BaseRetriever,
             prompt_template: ChatPromptTemplate,
-            model_name: str = "gpt-4o",
-            temperature: float = 0
+            model_name: str = "llama3.2", # "gpt-4o",
+            temperature: float = 0,
+            # streamlit
+            prompt_type: str = "basic",
+            # vector_db_path: str = "vector_db_v1"
     ):
         """
         Initialize the health management chatbot.
@@ -36,7 +40,11 @@ class HealthManagementChatbot:
             temperature: The temperature setting for response generation
         """
         self.retriever = retriever
+        # basic
         self.prompt_template = prompt_template
+        # streamlit
+        self.prompt_template = get_prompt_template(prompt_type)
+
         self.llm = get_llm(model_name=model_name, temperature=temperature)
 
         # Create document chain
