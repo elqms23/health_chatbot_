@@ -4,7 +4,7 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseRetriever
-from src.prompt_templates import get_prompt_template
+from prompt_templates import get_prompt_template
 from typing import Dict, Any
 
 def get_llm(model_name: str, temperature: float = 0):
