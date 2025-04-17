@@ -3,7 +3,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from chatbot import HealthChatbot 
+from chatbot import HealthManagementChatbot
+ 
 import streamlit as st
 
 # Sidebar for model settings
@@ -18,7 +19,7 @@ st.markdown("Ask health-related questions based on patient FHIR records.")
 # Load chatbot
 @st.cache_resource
 def load_chatbot():
-    return HealthChatbot(
+    return HealthManagementChatbot(
         vector_db_path="vector_db",
         model_name=model,
         prompt_type=prompt_type
