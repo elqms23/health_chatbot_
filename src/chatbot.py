@@ -80,4 +80,7 @@ class HealthManagementChatbot:
             String containing the response
         """
         response = self.process_query(query, patient_id)
-        return response["answer"]
+        
+        print("DEBUG: Full LLM response:", response)
+        return response.get("answer", "[No answer found in response]")
+        # return response["answer"]
