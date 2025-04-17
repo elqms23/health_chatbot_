@@ -39,6 +39,7 @@ class HealthManagementChatbot:
             model_name: The name of the language model to use
             temperature: The temperature setting for response generation
         """
+        
         self.retriever = retriever
         # basic
         self.prompt_template = prompt_template
