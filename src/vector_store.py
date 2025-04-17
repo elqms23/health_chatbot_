@@ -1,7 +1,7 @@
 from typing import List
 from langchain.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-# from langchain_community.vectorstores import FAISS    
+from langchain_community.vectorstores import FAISS    
 from langchain.schema import Document
 import torch
 
@@ -99,13 +99,20 @@ class HealthVectorStore:
         """
         if not self.persist_directory:
             raise ValueError("No persist directory specified.")
+        
+        # for local
+        # try:
+        #     self.vectorstore = Chroma(
+        #         persist_directory=self.persist_directory,
+        #         embedding_function=self.embeddings
+        #     )
+        #     print(f"✅ Vector store loaded from {self.persist_directory}")
+        # except Exception as e:
+        #     print(f"⚠️ Failed to load vector store: {e}")
+        #     self.vectorstore = None
 
-        try:
-            self.vectorstore = Chroma(
-                persist_directory=self.persist_directory,
-                embedding_function=self.embeddings
-            )
-            print(f"✅ Vector store loaded from {self.persist_directory}")
-        except Exception as e:
-            print(f"⚠️ Failed to load vector store: {e}")
-            self.vectorstore = None
+        from langchain.vectorstores.faiss import FAISS
+
+        dummy_docs = [Document(page_content="dummy", metadata={})]
+        self.vectorstore = FAISS.from_documents(dummy_docs, self.embeddings)
+        print("FAISS vector store loaded (placeholder)")
