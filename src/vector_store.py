@@ -109,7 +109,10 @@ class HealthVectorStore:
                 persist_directory=self.persist_directory,
                 embedding_function=self.embeddings
             )
+            
             print(f"✅ Vector store loaded from {self.persist_directory}")
+            print("📦 Type of vectorstore:", type(self.vectorstore))
+            print("📦 Contents:", dir(self.vectorstore))
         except Exception as e:
             self.vectorstore = None
             print(f"⚠️ Failed to load vector store: {e}")
