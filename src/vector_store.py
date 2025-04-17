@@ -113,6 +113,6 @@ class HealthVectorStore:
 
         from langchain.vectorstores.faiss import FAISS
 
-        dummy_docs = [Document(page_content="dummy", metadata={})]
+        dummy_docs = [Document(page_content="placeholder", metadata={"source": "dummy"})]
         self.vectorstore = FAISS.from_documents(dummy_docs, self.embeddings)
         print("FAISS vector store loaded (placeholder)")

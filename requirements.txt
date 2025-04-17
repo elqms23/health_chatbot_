@@ -8,3 +8,5 @@ tqdm>=4.66.1
 streamlit
 torch
 sentence-transformers
+faiss-cpu
+faiss-gpu
