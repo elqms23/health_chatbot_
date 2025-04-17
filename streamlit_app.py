@@ -31,6 +31,9 @@ st.markdown("Ask health-related questions based on patient FHIR records.")
 def load_chatbot(model_name, prompt_type):
     vector_store = HealthVectorStore(persist_directory=VECTOR_DB_PATH)
     vector_store.load()
+    if vector_store.vectorstore is None:
+        return None  
+    
     retriever = vector_store.get_retriever()
 
     if prompt_type == "basic":
