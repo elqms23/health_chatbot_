@@ -102,3 +102,16 @@ class HealthPromptTemplates:
         """
 
         return ChatPromptTemplate.from_template(template)
+    
+    @staticmethod
+    def get_prompt_template(prompt_type: str) -> ChatPromptTemplate:
+        if prompt_type == "basic":
+            return HealthPromptTemplates.get_basic_health_template()
+        elif prompt_type == "enhanced":
+            return HealthPromptTemplates.get_enhanced_health_template()
+        elif prompt_type == "medication":
+            return HealthPromptTemplates.get_medication_management_template()
+        else:
+            raise ValueError(f"Unknown prompt_type: {prompt_type}")
+        
+get_prompt_template = HealthPromptTemplates.get_prompt_template
