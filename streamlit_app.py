@@ -20,7 +20,7 @@ st.markdown("Ask health-related questions based on patient FHIR records.")
 @st.cache_resource
 def load_chatbot():
     return HealthManagementChatbot(
-        vector_db_path="vector_db",
+        vector_db_path="vector_db_v1",
         model_name=model,
         prompt_type=prompt_type
     )
