@@ -18,14 +18,14 @@ st.markdown("Ask health-related questions based on patient FHIR records.")
 
 # Load chatbot
 @st.cache_resource
-def load_chatbot():
+def load_chatbot(model_name, prompt_type):
     return HealthManagementChatbot(
         vector_db_path="vector_db_v1",
-        model_name=model,
+        model_name=model_name,
         prompt_type=prompt_type
     )
 
-chatbot = load_chatbot()
+chatbot = load_chatbot(model, prompt_type)
 
 # User input
 query = st.text_input("💬 Enter your health question:")
