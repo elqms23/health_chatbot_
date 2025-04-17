@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from chatbot import HealthManagementChatbot
+from src.chatbot import HealthManagementChatbot
  
 import streamlit as st
 from src.vector_store import HealthVectorStore
