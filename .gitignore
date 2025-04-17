@@ -13,4 +13,4 @@ output/
 
 
 # Streamlit cache
-.streamlit/
+.streamlit/"vector_db_v1/" 
