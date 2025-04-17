@@ -19,7 +19,7 @@ PROMPT_TYPE = "basic"
 # Sidebar for model settings
 st.sidebar.title("🔧 Settings")
 VECTOR_DB_PATH = "./vector_db_v1"
-model = st.sidebar.selectbox("LLM Model", ["gpt-3.5-turbo", "llama3.2", "mistral"])
+model = st.sidebar.selectbox("LLM Model", ["llama3.2", "gpt-3.5-turbo",  "mistral"])
 prompt_type = st.sidebar.selectbox("Prompt Style", ["basic", "enhanced", "medication"])
 
 # Title & description
