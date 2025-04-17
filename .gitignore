@@ -1,0 +1,15 @@
+.env
+__pycache__/
+*.pyc
+vector_db_v1/
+vector_db/
+output/
+*.sqlite3
+*.log
+*.ndjson
+*.csv
+*.zip
+
+
+# Streamlit cache
+.streamlit/
