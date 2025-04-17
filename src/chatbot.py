@@ -47,12 +47,14 @@ class HealthManagementChatbot:
         # self.prompt_template = get_prompt_template(prompt_type)
 
         self.llm = get_llm(model_name=model_name, temperature=temperature)
+        if self.retriever and self.prompt_template:
+            # Create document chain
+            self.document_chain = create_stuff_documents_chain(self.llm, self.prompt_template)
 
-        # Create document chain
-        self.document_chain = create_stuff_documents_chain(self.llm, self.prompt_template)
-
-        # Create retrieval chain
-        self.retrieval_chain = create_retrieval_chain(self.retriever, self.document_chain)
+            # Create retrieval chain
+            self.retrieval_chain = create_retrieval_chain(self.retriever, self.document_chain)
+        else:
+            self.retrieval_chain = None
 
     def process_query(self, query: str, patient_id: str = None) -> Dict[str, Any]:
         """
@@ -88,8 +90,20 @@ class HealthManagementChatbot:
         Returns:
             String containing the response
         """
-        response = self.process_query(query, patient_id)
+        id_context = f"Patient ID: {patient_id}" if patient_id else ""
+        full_query = f"{query}\n{id_context}" if id_context else query
+
+        if self.retrieval_chain:
+            response = self.retrieval_chain.invoke({"input": full_query})
+            return response.get("answer", "[No answer found in response]")
+        else:
+            response = self.llm.invoke(full_query)
+            return response.content if hasattr(response, "content") else response
         
-        print("DEBUG: Full LLM response:", response)
-        return response.get("answer", "[No answer found in response]")
+        # if self.retriever:
+        #     print("DEBUG: Full LLM response:", response)
+        #     return response.get("answer", "[No answer found in response]")
+        # else:
+        #     response = self.llm.invoke(query)
+        #     return response.content if hasattr(response, "content") else response
         # return response["answer"]

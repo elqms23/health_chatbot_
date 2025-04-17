@@ -30,11 +30,15 @@ st.markdown("Ask health-related questions based on patient FHIR records.")
 @st.cache_resource
 def load_chatbot(model_name, prompt_type):
     vector_store = HealthVectorStore(persist_directory=VECTOR_DB_PATH)
-    vector_store.load()
-    if vector_store.vectorstore is None:
-        return None  
-    
-    retriever = vector_store.get_retriever()
+    retriever = None
+    prompt_template = None
+
+    try:
+        vector_store.load()
+        retriever = vector_store.get_retriever()
+        print("✅ Vector store loaded.")
+    except Exception as e:
+        print(f"⚠️ Vector store not available: {e}")
 
     if prompt_type == "basic":
         prompt_template = HealthPromptTemplates.get_basic_health_template()
@@ -46,7 +50,7 @@ def load_chatbot(model_name, prompt_type):
     return HealthManagementChatbot(
         # vector_db_path= "vector_db_v1",
         retriever = retriever,
-        prompt_template=prompt_template,
+        prompt_template=prompt_template if retriever else None,
         model_name=model_name,
         prompt_type=prompt_type
     )
