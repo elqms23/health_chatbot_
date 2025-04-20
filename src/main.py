@@ -52,14 +52,15 @@ def main():
         print(f"Loaded {len(health_records)} health records.")
 
         # Process records for embedding
-        texts = data_processor.process_for_embedding(health_records)
+        texts = data_processor.process_for_embedding() #(health_records)
         print(f"Generated {len(texts)} text chunks for embedding.")
 
         # Create documents and vector store
         print("Setting up vector store...")
-        documents = vector_store.create_documents(texts)
+        # documents = vector_store.create_documents(texts)
+        documents = texts
         vector_store.create_vector_store(documents)
-        vector_store.save()
+        vector_store.save() 
         print(f"Vector store created and saved to {args.persist_dir}")
     else:
         print("Skipping data processing, loading existing vector store...")
@@ -71,8 +72,7 @@ def main():
             print("Make sure you've previously created a vector store or provide --data-dir to create one")
             return
 
-    # Get retriever
-    retriever = vector_store.get_retriever({"k": 5})
+    
 
     # Select prompt template
     if args.prompt_type == 'basic':
@@ -82,16 +82,7 @@ def main():
     else:  # medication
         prompt_template = HealthPromptTemplates.get_medication_management_template()
 
-    # Create chatbot
-    chatbot = HealthManagementChatbot(
-        retriever=retriever,
-        prompt_template=prompt_template,
-        model_name=args.model
-    )
-
-    print("\nHealth Management Chatbot is ready!")
-    print(f"Using '{args.prompt_type}' prompt template")
-    print("Type 'exit' to quit the chatbot.")
+    
 
     # Simple command line interface
     while True:
@@ -104,6 +95,20 @@ def main():
         if not patient_id:
             patient_id = None
 
+        # Get retriever
+        retriever = vector_store.get_retriever({"k": 5}, patient_id= patient_id)
+            
+        # Create chatbot
+        chatbot = HealthManagementChatbot(
+            retriever=retriever,
+            prompt_template=prompt_template,
+            model_name=args.model
+        )
+
+        print("\nHealth Management Chatbot is ready!")
+        print(f"Using '{args.prompt_type}' prompt template")
+        print("Type 'exit' to quit the chatbot.")
+        
         print("\nProcessing your query...\n")
         response = chatbot.get_answer(query, patient_id)
 

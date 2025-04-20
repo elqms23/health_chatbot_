@@ -65,6 +65,13 @@ if chatbot is None:
 query = st.text_input("💬 Enter your health question:")
 patient_id = st.text_input("🆔 Patient ID (optional):")
 
+if patient_id:
+    patient_record = chatbot.get_patient_record(patient_id)
+    if patient_record:
+        name_parts = patient_record.get("name", [{}])[0]
+        full_name = " ".join(name_parts.get("given", [])) + " " + name_parts.get("family", "")
+        st.markdown(f"👤 **Patient Name**: {full_name}")
+
 # Ask button
 if st.button("Ask"):
     if not query.strip():
