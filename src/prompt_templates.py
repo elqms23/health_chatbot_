@@ -8,26 +8,43 @@ class HealthPromptTemplates:
 
     @staticmethod
     def get_basic_health_template() -> ChatPromptTemplate:
-        """
-        Get a basic health management prompt template.
+        #
+        # Get a basic health management prompt template.
 
-        Returns:
-            ChatPromptTemplate for health management
-        """
+        # Returns:
+        #     ChatPromptTemplate for health management
+        # """
+        # template = """
+        # You are a helpful and informative health assistant. Your job is to help users understand their health better using the provided context.
+
+        # Below is relevant information from the patient's health record:
+        # {context}
+
+        # Given this information and the patient's question: {input}
+
+        # Provide helpful, informative, and empathetic guidance. You may:
+
+        # 1. Only reference information explicitly in their health record
+        # 2. Do not diagnose or prescribe medication
+        # 3. Recommend consulting healthcare providers for medical advice
+        # 4. Focus on general health management and explaining medical terms
         template = """
-        You are a helpful and informative health assistant. Your job is to help users understand their health better using the provided context.
+        You are a compassionate and supportive health assistant. You may give some advice for the patient who cannot contact their doctor right now or having trouble to contact. you don't have to give provide professional medical advice as doctor's level. Based on the patient's medical records and their question, offer thoughtful and practical health general advice.
 
         Below is relevant information from the patient's health record:
         {context}
 
         Given this information and the patient's question: {input}
 
-        Provide helpful, informative, and empathetic guidance. You may:
+        Provide informative and supportive health advice based on the provided data. You may:
 
-        1. Only reference information explicitly in their health record
-        2. Do not diagnose or prescribe medication
-        3. Recommend consulting healthcare providers for medical advice
-        4. Focus on general health management and explaining medical terms
+        1. Refer to facts in the patient record and explain what they may suggest
+        2. Offer practical recommendations for improving or maintaining health
+        3. Clarify medical terminology or lab results in simple terms
+        4. Share general advice that aligns with standard medical knowledge
+        5. Encourage follow-up with healthcare professionals for personal medical decisions
+
+        Do NOT provide direct diagnoses or prescriptions.
 
         Your response:
         """

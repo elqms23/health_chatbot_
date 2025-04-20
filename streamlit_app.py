@@ -12,14 +12,14 @@ from src.prompt_templates import HealthPromptTemplates
 
 
 VECTOR_DB_PATH = "./vector_db_v1"
-MODEL_NAME = "llama3"
+MODEL_NAME = "gpt-4o-mini"
 PROMPT_TYPE = "basic"
 
 
 # Sidebar for model settings
 st.sidebar.title("🔧 Settings")
 VECTOR_DB_PATH = "./vector_db_v1"
-model = st.sidebar.selectbox("LLM Model", ["llama3.2", "gpt-3.5-turbo",  "mistral"])
+model = st.sidebar.selectbox("LLM Model", ["gpt-4o-mini", "llama3.2", "mistral"])
 prompt_type = st.sidebar.selectbox("Prompt Style", ["basic", "enhanced", "medication"])
 
 # Title & description

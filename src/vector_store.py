@@ -1,8 +1,8 @@
 from typing import List
 from langchain.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
-__import__('pysqlite3')
+# __import__('pysqlite3')
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_community.vectorstores import Chroma
 # from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
@@ -110,9 +110,9 @@ class HealthVectorStore:
                 embedding_function=self.embeddings
             )
             
-            print(f"✅ Vector store loaded from {self.persist_directory}")
-            print("📦 Type of vectorstore:", type(self.vectorstore))
-            print("📦 Contents:", dir(self.vectorstore))
+            # print(f"✅ Vector store loaded from {self.persist_directory}")
+            # print("📦 Type of vectorstore:", type(self.vectorstore))
+            # print("📦 Contents:", dir(self.vectorstore))
         except Exception as e:
             self.vectorstore = None
             print(f"⚠️ Failed to load vector store: {e}")

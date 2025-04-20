@@ -24,7 +24,7 @@ class HealthManagementChatbot:
             self,
             retriever: BaseRetriever,
             prompt_template: ChatPromptTemplate,
-            model_name: str = "llama3.2", # "gpt-4o",
+            model_name: str =  "gpt-4o", # "llama3.2",
             temperature: float = 0,
             # streamlit
             prompt_type: str = "basic",
