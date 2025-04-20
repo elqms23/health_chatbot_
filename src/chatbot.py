@@ -93,11 +93,11 @@ class HealthManagementChatbot:
         id_context = f"Patient ID: {patient_id}" if patient_id else ""
         full_query = f"{query}\n{id_context}" if id_context else query
 
-        if self.retriever and self.prompt_template:
-            results = self.retriever.get_relevant_documents(query)
-            patient_name = results[0].metadata.get("name", "the patient") if results else "the patient"
-            query = f"My name is {patient_name}. {query}"
-        
+        # if self.retriever and self.prompt_template:
+        #     results = self.retriever.get_relevant_documents(query)
+        #     patient_name = results[0].metadata.get("name", "the patient") if results else "the patient"
+        #     query = f"My name is {patient_name}. {query}"
+
         if self.retrieval_chain:
             response = self.retrieval_chain.invoke({"input": full_query})
             return response.get("answer", "[No answer found in response]")
@@ -112,3 +112,6 @@ class HealthManagementChatbot:
         #     response = self.llm.invoke(query)
         #     return response.content if hasattr(response, "content") else response
         # return response["answer"]
+
+    def get_patient_record(self, patient_id: str):
+        return self.data_processor.get_patient_record_by_id(patient_id)
