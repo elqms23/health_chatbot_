@@ -29,6 +29,7 @@ class HealthManagementChatbot:
             # streamlit
             prompt_type: str = "basic",
             # vector_db_path: str = "vector_db_v1"
+            data_processor=None
     ):
         """
         Initialize the health management chatbot.
@@ -55,6 +56,7 @@ class HealthManagementChatbot:
             self.retrieval_chain = create_retrieval_chain(self.retriever, self.document_chain)
         else:
             self.retrieval_chain = None
+        self.data_processor = data_processor
 
     def process_query(self, query: str, patient_id: str = None) -> Dict[str, Any]:
         """

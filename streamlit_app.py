@@ -7,18 +7,19 @@ from src.chatbot import HealthManagementChatbot
  
 import streamlit as st
 from src.vector_store import HealthVectorStore
+from src.data_processor import SyntheaDataProcessor
 from src.prompt_templates import HealthPromptTemplates
 
 
 
-VECTOR_DB_PATH = "./vector_db_v1"
+VECTOR_DB_PATH = "./vector_db_v2"
 MODEL_NAME = "gpt-4o-mini"
 PROMPT_TYPE = "basic"
 
 
 # Sidebar for model settings
 st.sidebar.title("🔧 Settings")
-VECTOR_DB_PATH = "./vector_db_v1"
+VECTOR_DB_PATH = "./vector_db_v2"
 model = st.sidebar.selectbox("LLM Model", ["gpt-4o-mini", "llama3.2", "mistral"])
 prompt_type = st.sidebar.selectbox("Prompt Style", ["basic", "enhanced", "medication"])
 
@@ -48,12 +49,15 @@ def load_chatbot(model_name, prompt_type):
     else:
         prompt_template = HealthPromptTemplates.get_medication_management_template()
 
+    data_processor = SyntheaDataProcessor(data_dir="./fhir")
+
     return HealthManagementChatbot(
         # vector_db_path= "vector_db_v1",
         retriever = retriever,
         prompt_template=prompt_template if retriever else None,
         model_name=model_name,
-        prompt_type=prompt_type
+        prompt_type=prompt_type,
+        data_processor=data_processor 
     )
 
 chatbot = load_chatbot(model, prompt_type)
