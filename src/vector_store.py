@@ -1,8 +1,8 @@
 from typing import List
-from langchain.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
-# __import__('pysqlite3')
+from langchain_community.embeddings import HuggingFaceEmbeddings #OpenAIEmbeddings
+__import__('pysqlite3')
 import sys
-# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_community.vectorstores import Chroma
 # from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
@@ -71,7 +71,7 @@ class HealthVectorStore:
                 embedding=self.embeddings
             )
 
-    def get_retriever(self, search_kwargs=None):
+    def get_retriever(self, search_kwargs=None, patient_id=None):
         """
         Get a retriever from the vector store.
 
@@ -86,6 +86,9 @@ class HealthVectorStore:
 
         if search_kwargs is None:
             search_kwargs = {"k": 5}
+        
+        if patient_id is not None:
+            search_kwargs["filter"] = {"patient_id": patient_id}
 
         return self.vectorstore.as_retriever(search_kwargs=search_kwargs)
 

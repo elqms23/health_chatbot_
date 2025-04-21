@@ -1,7 +1,9 @@
 .env
 __pycache__/
 *.pyc
-# vector_db_v1/
+vector_db_v1/
+synthea/
+data_generate/
 vector_db/
 output/
 *.sqlite3

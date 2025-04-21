@@ -1,6 +1,7 @@
 import json
 import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
 from typing import List, Dict, Any
 
 
@@ -63,45 +64,89 @@ class SyntheaDataProcessor:
                         print(f"Error decoding JSON from file: {file_path}")
 
         return health_records
+    
 
-    def process_for_embedding(self, records: List[Dict[str, Any]]) -> List[str]:
+
+    # def process_for_embedding(self, records: List[Dict[str, Any]]) -> List[str]:
+    #     """
+    #     Process records into text chunks suitable for embedding.
+
+    #     Args:
+    #         records: List of health records to process
+
+    #     Returns:
+    #         List of text chunks
+    #     """
+    #     # Convert records to string format
+    #     record_texts = [json.dumps(record, indent=2) for record in records]
+
+    #     # Split texts into chunks
+    #     chunks = []
+    #     for text in record_texts:
+    #         text_chunks = self.text_splitter.split_text(text)
+    #         chunks.extend(text_chunks)
+
+    #     return chunks
+    
+    def process_for_embedding(self) -> List[Document]:
         """
-        Process records into text chunks suitable for embedding.
-
-        Args:
-            records: List of health records to process
-
-        Returns:
-            List of text chunks
+        Convert all patient data into LangChain Document format with metadata.
         """
-        # Convert records to string format
-        record_texts = [json.dumps(record, indent=2) for record in records]
+        documents = []
+        for record in self.load_all_health_records():
+            patient_id = str(record.get("id") or "unknown_id")
+            name_info = record.get("name", [{}])[0]
+            full_name = " ".join(name_info.get("given", [""])).strip() + " " + name_info.get("family", "")
+            full_name = full_name.strip() or "Unknown Name"
+            # Convert entire JSON to text (or modify to extract specific fields)
+            text = json.dumps(record, indent=2)
 
-        # Split texts into chunks
-        chunks = []
-        for text in record_texts:
-            text_chunks = self.text_splitter.split_text(text)
-            chunks.extend(text_chunks)
+            # doc = Document(
+            #     page_content=text,
+            #     metadata={"patient_id": patient_id, "name": full_name.strip(), }
+            # )
+            doc = Document(
+                page_content=text,
+                metadata={
+                    "patient_id": patient_id,
+                    "name": full_name,
+                    "source": f"record_{patient_id}"
+                })
+            documents.append(doc)
 
-        return chunks
+        return documents
 
-    def get_patient_record_by_id(self, patient_id: str) -> Dict[str, Any]:
+    # def get_patient_record_by_id(self, patient_id: str) -> Dict[str, Any]:
+    #     """
+    #     Retrieve a specific patient's record by ID.
+
+    #     Args:
+    #         patient_id: The ID of the patient to retrieve
+
+    #     Returns:
+    #         Patient record as dictionary, or empty dict if not found
+    #     """
+    #     for filename in os.listdir(self.data_directory):
+    #         if filename.endswith(".json") and patient_id in filename:
+    #             file_path = os.path.join(self.data_directory, filename)
+    #             with open(file_path, 'r', encoding='utf-8') as f:
+    #                 try:
+    #                     return json.load(f)
+    #                 except json.JSONDecodeError:
+    #                     print(f"Error decoding JSON from file: {file_path}")
+
+    #     return {}
+
+    def get_patient_record_by_id(self, patient_id: str) -> Dict:
         """
-        Retrieve a specific patient's record by ID.
-
-        Args:
-            patient_id: The ID of the patient to retrieve
-
-        Returns:
-            Patient record as dictionary, or empty dict if not found
+        Retrieve a single patient's record by ID.
         """
-        for filename in os.listdir(self.data_directory):
-            if filename.endswith(".json") and patient_id in filename:
-                file_path = os.path.join(self.data_directory, filename)
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    try:
-                        return json.load(f)
-                    except json.JSONDecodeError:
-                        print(f"Error decoding JSON from file: {file_path}")
-
+        for record in self.load_all_health_records():
+            if "entry" in record:
+                for entry in record["entry"]:
+                    resource = entry.get("resource", {})
+                    if resource.get("id") == patient_id and resource.get("resourceType") == "Patient":
+                        return resource
+                # if record.get("id") == patient_id:
+                #     return record
         return {}
