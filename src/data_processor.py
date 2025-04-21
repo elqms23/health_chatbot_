@@ -142,6 +142,11 @@ class SyntheaDataProcessor:
         Retrieve a single patient's record by ID.
         """
         for record in self.load_all_health_records():
-            if record.get("id") == patient_id:
-                return record
+            if "entry" in record:
+                for entry in record["entry"]:
+                    resource = entry.get("resource", {})
+                    if resource.get("id") == patient_id and resource.get("resourceType") == "Patient":
+                        return resource
+                # if record.get("id") == patient_id:
+                #     return record
         return {}
