@@ -71,10 +71,14 @@ patient_id = st.text_input("🆔 Patient ID (optional):")
 
 if patient_id:
     patient_record = chatbot.get_patient_record(patient_id)
+    print("Retrieved patient record:", patient_record)
     if patient_record:
         name_parts = patient_record.get("name", [{}])[0]
-        full_name = " ".join(name_parts.get("given", [])) + " " + name_parts.get("family", "")
-        st.markdown(f"👤 **Patient Name**: {full_name}")
+        if "given" in name_parts and "family" in name_parts:
+            full_name = " ".join(name_parts.get("given", [])) + " " + name_parts.get("family", "")
+            st.markdown(f"👤 **Patient Name**: {full_name}")
+        else:
+            st.markdown("👤 **Patient Name**: Not available in the record")
 
 # Ask button
 if st.button("Ask"):
@@ -88,3 +92,5 @@ if st.button("Ask"):
                 st.markdown(response)
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+
+print("🛠️ Current working directory:", os.getcwd())
