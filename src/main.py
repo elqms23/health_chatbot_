@@ -14,10 +14,10 @@ def setup_argparse():
 
     parser.add_argument('--data-dir', type=str,
                         help='Directory containing Synthea output data')
-    parser.add_argument('--persist-dir', type=str, default='./vector_db',
-                        help='Directory to persist vector store (default: ./vector_db)')
-    parser.add_argument('--model', type=str, default='gpt-4o',
-                        help='LLM model to use (default: gpt-4o)')
+    parser.add_argument('--persist-dir', type=str, default='./vector_db_v2',
+                        help='Directory to persist vector store (default: ./vector_db_v2)')
+    parser.add_argument('--model', type=str, default='gpt-4o-mini',
+                        help='LLM model to use (default: gpt-4o-mini)')
     parser.add_argument('--prompt-type', type=str, default='basic',
                         choices=['basic', 'enhanced', 'medication'],
                         help='Type of prompt template to use')
@@ -108,7 +108,7 @@ def main():
         print("\nHealth Management Chatbot is ready!")
         print(f"Using '{args.prompt_type}' prompt template")
         print("Type 'exit' to quit the chatbot.")
-        
+
         print("\nProcessing your query...\n")
         response = chatbot.get_answer(query, patient_id)
 

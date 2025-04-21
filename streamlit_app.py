@@ -49,7 +49,7 @@ def load_chatbot(model_name, prompt_type):
     else:
         prompt_template = HealthPromptTemplates.get_medication_management_template()
 
-    data_processor = SyntheaDataProcessor(data_dir="./fhir")
+    data_processor = SyntheaDataProcessor(data_directory="./fhir")
 
     return HealthManagementChatbot(
         # vector_db_path= "vector_db_v1",
