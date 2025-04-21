@@ -94,3 +94,7 @@ if st.button("Ask"):
                 st.error(f"An error occurred: {e}")
 
 print("🛠️ Current working directory:", os.getcwd())
+all_records = chatbot.data_processor.load_all_health_records()
+st.write("All Patient IDs:")
+for rec in all_records:
+    st.write(rec.get("id"))
