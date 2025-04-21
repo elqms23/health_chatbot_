@@ -71,7 +71,7 @@ patient_id = st.text_input("🆔 Patient ID (optional):")
 
 if patient_id:
     patient_record = chatbot.get_patient_record(patient_id)
-    print("Retrieved patient record:", patient_record)
+    st.write("Retrieved patient record:", patient_record)
     if patient_record:
         name_parts = patient_record.get("name", [{}])[0]
         if "given" in name_parts and "family" in name_parts:
